@@ -93,20 +93,20 @@ intercalate' (s:d) (a:b)
   | otherwise = a ++ (s:d) ++ intercalate' (s:d) b
 
 and' [True] = True
-and' (e:es)
-  | e == False = False
-  | e == True = and' es
+and' (a:b)
+  | a == False = False
+  | a == True = and' b
 
 or' [False] = False
-or' (e:es)
-  | e == True = True
-  | e == False = or' es
+or' (a:b)
+  | a == True = True
+  | a == False = or' b
 
 sum' [] = 0
-sum' (e:es) = e + (sum' es)
+sum' (a:b) = a + (sum' b)
 
 product' [] = 1
-product' (e:es) = e * (product' es)
+product' (a:b) = a * (product' b)
 
 takeWhile' n [] = []
 takeWhile' n (a:b)
@@ -131,10 +131,8 @@ any' n (a:b)
   | n a == False = any' n b
   | n a == True = True
 
-
 insert' s [f] = s : [f]
 insert' s (a:b) = (min s a) : insert' s b
-
 
 nub' [] = []
 nub' (a:b) = a : nub' (deleteAll a b)
