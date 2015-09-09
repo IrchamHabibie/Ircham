@@ -37,6 +37,23 @@ deleteAll n (a:b)
   | a == n = deleteAll n b
   | otherwise = [a] ++ deleteAll n b
 
+foldl'' x 0 (a:b) = 0
+foldl'' x c [] = (x c 1)
+foldl'' x c (a:b) = (x c (product'(a:b)))
+
+foldl1'' x [] = 1
+foldl1'' x (a:b) = x  (foldl1'' x b) a
+
+zip' [] (a:b) = []
+zip' (a:b) [] = []
+zip' [] [] = []
+zip' (a:b) (c:d) = (a,c) : zip' (b) (d)
+
+zipWith' x [] (a:b) = []
+zipWith' x (a:b) [] = []
+zipWith' x [] [] = []
+zipWith' x (a:b) (c:d) = (x a c) : zipWith' x (b) (d)
+
 nth (a:b) 0 = a
 nth (a:b) x = nth b (x-1)
 
@@ -101,11 +118,27 @@ or' (a:b)
   | a == True = True
   | a == False = or' b
 
+zip3' [] [] (a:b) = []
+zip3' [] (a:b) [] = []
+zip3' (a:b) [] [] = []
+zip3' (a:b) (c:d) [] = []
+zip3' (a:b) [] (c:d) = []
+zip3' [] (a:b) (c:d) = []
+zip3' [] [] [] = []
+zip3' (a:b) (c:d) (e:f) = (a,c,e) : zip3' (b) (d) (f)
+
 sum' [] = 0
 sum' (a:b) = a + (sum' b)
 
 product' [] = 1
 product' (a:b) = a * (product' b)
+
+unlines' [] = []
+unlines' (a:b) = a ++ "\n" ++ unlines' b
+
+unwords' [] = []
+unwords' [a] = a
+unwords' (a:b) = a ++ " " ++ unwords' b
 
 takeWhile' n [] = []
 takeWhile' n (a:b)
@@ -135,6 +168,16 @@ insert' s (a:b)
   | (min s a) == s = s : a : b
   | (min s a) == a = a : insert' s b
 
+
+zipWith3' x [] [] (a:b) = []
+zipWith3' x [] (a:b) [] = []
+zipWith3' x (a:b) [] [] = []
+zipWith3' x (a:b) (c:d) [] = []
+zipWith3' x (a:b) [] (c:d) = []
+zipWith3' x [] (a:b) (c:d) = []
+zipWith3' x [] [] [] = []
+zipWith3' z (a:b) (c:d) (e:f) = (z a c e) : zipWith3' z (b) (d) (f)
+
 nub' [] = []
 nub' (a:b) = a : nub' (deleteAll a b)
 
@@ -161,3 +204,15 @@ intersect' [] [] = []
 intersect' (a:b) (c:d)
   | elem' a (c:d) == True = a : intersect' b (c:d)
   | otherwise = intersect' b (c:d)
+
+splitAt' s (a:b) = ( take' s (a:b) , drop' s (a:b) )
+
+antifilter' n [] = []
+antifilter' n (a:b)
+  | (n a) == False = a : antifilter' n b
+  | (n a) == True = antifilter' n b
+
+partition' s (a:b) = (filter' s (a:b), antifilter' s (a:b) )
+
+replicate' 0 a = []
+replicate' s a = a : replicate' (s-1) a
