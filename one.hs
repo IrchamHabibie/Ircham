@@ -65,8 +65,8 @@ foldl'' x c (a:b) = foldl'' x (x c a) b
 
 --pembatas
 
-foldl1'' x [] = 1
-foldl1'' x (a:b) = x  (foldl1'' x b) a
+foldl1'' (x) [a] = a
+foldl1'' (x) (a:b) = foldl1'' x ((x a (head b)) : tail b)
 
 --pembatas
 
@@ -169,11 +169,11 @@ intersperse' x (a:b)
   | otherwise = a : x : intersperse' x b
 
 --pembatas
-
 intercalate' (s:d) [] = []
-intercalate' (s:d) (a :b)
-  | b == [] = a ++ intercalate' (s:d) b
-  | otherwise = a ++ (s:d) ++ intercalate' (s:d) b
+intercalate' [] [n] = n
+intercalate' (s:d) (a:b) = a ++ (s:d) ++ intercalate' (s:d) b
+
+-- inter [1] [[1]] = [1] ++ [1] ++ intercalate [1]
 
 --pembatas
 
@@ -323,12 +323,9 @@ intersect' (a:b) (c:d)
   | otherwise = intersect' b (c:d)
 
 --pembatas
---group' (a:b) = wkwk (a:b) : group' (delete a (a:b))
 
---wkwk (a:b)
-  --| a == head b = a : wkwk (delete a (a:b))
-  --| a /= head b = a : []
--- g [1,1,1,2,3] = [1,1,1] : [2] : [3] : [[]]
+group' [] = []
+group' (a:b) = takeWhile (a == ) (a:b) : group' (dropWhile  (a== ) b)
 
 --pembatas
 splitAt' s (a:b) = ( take' s (a:b) , drop' s (a:b) )
@@ -345,6 +342,15 @@ partition' s (a:b) = (filter' s (a:b), antifilter' s (a:b) )
 
 replicate' 0 a = []
 replicate' s a = a : replicate' (s-1) a
+
+-- pembatas
+
+words' "" = []
+words' (a:b)
+  | a == ' ' = words' b
+-- words "a a" = "a"
+-- words " a" = words "a"
+-- words "a" = "a"
 
 --pembatas
 
